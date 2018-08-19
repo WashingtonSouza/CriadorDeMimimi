@@ -4,8 +4,32 @@ import { View, StyleSheet, Text, TextInput, Image } from 'react-native';
 export default class App extends Component {
   constructor(props){
      super(props);
-     this.state = {text1:'Texto 1', texto2:'texto2'}
+     this.state = {text1:'Alguma coisa', texto2:'Alguma coisa'}
+     this.escrever = this.escrever.bind(this);
   } 
+
+  mudarVogais(texto){
+    let novoTexto = texto.toLowerCase();
+    return this.expresaoRegularNovoTexto(novoTexto);
+  }
+
+  expresaoRegularNovoTexto(novoTexto){
+    novoTexto = novoTexto.replace(/(a|e|i|o|u)/g, 'i');
+    novoTexto = novoTexto.replace(/(á|à|â|ã)/g, 'i');
+    novoTexto = novoTexto.replace(/(é|è|ê)/g, 'i');
+    novoTexto = novoTexto.replace(/(í|ì|î)/g, 'i');
+    novoTexto = novoTexto.replace(/(ò|ó|õ|ô)/g, 'i');
+    novoTexto = novoTexto.replace(/(ú|ù|û)/g, 'i');
+ 
+    return novoTexto;
+  }
+
+  escrever(t){
+    let s = this.state;
+    s.text1 = t;
+    s.texto2 = this.mudarVogais(t);
+    this.setState(s);
+  }
 
   render() {
     return (
@@ -15,15 +39,14 @@ export default class App extends Component {
         </View>
 
         <View style={styles.inputArea}>
-          <TextInput style={styles.input} placeholder="Digite seu mimimi"/>
+          <TextInput style={styles.input} placeholder="Digite seu mimimi" onChangeText={this.escrever}/>
         </View>
 
         <View style={styles.area}>
-        <Text style={[styles.texto, styles.texto1]} >{this.state.text1.toUpperCase()}</Text>
-          <Image style={styles.guri} source={require('./images/mimimi.jpg')}/>
-          <Text style={[styles.texto, styles.texto2]}>{this.state.texto2.toUpperCase()}</Text>
-        </View>
-        
+            <Text style={[styles.texto, styles.texto1]}>{this.state.text1.toUpperCase()}</Text>
+            <Image style={styles.guri} source={require('./images/mimimi.jpg')}/>
+            <Text style={[styles.texto, styles.texto2]}>{this.state.texto2.toUpperCase()}</Text>
+         </View>        
       </View>
     );
   }
@@ -61,7 +84,7 @@ const styles = StyleSheet.create({
   guri:{
     width:300,
     height:300,
-    marginTop: -70,
+    marginTop: -75,
     zIndex:0
   },
   texto:{
@@ -71,13 +94,13 @@ const styles = StyleSheet.create({
     backgroundColor:'transparent',
     fontWeight:'bold',
     textAlign:'center',
-    height:70
+    height:75
   },
   texto1:{
      zIndex:1
   },
   texto2:{
     zIndex:1,
-    marginTop: -70
+    marginTop: -75
   }
 });
